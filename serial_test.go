@@ -22,7 +22,7 @@ func TestSerialTest(t *testing.T) {
 	}
 
 	p, statistic = SerialTestN(randomRNG)
-	targetP = 0.1
+	targetP = 1.0
 	if p-targetP > MACHINE_EPSILON {
 		t.Errorf("randomRNG, Expected p-value of %f, got %f", targetP, p)
 	}
@@ -34,13 +34,13 @@ func TestSerialTest(t *testing.T) {
 	p = SerialTest(slightlyAlternatingRNG{})
 	targetP = 0.0001
 	if p-targetP > MACHINE_EPSILON {
-		t.Errorf("alternatingRNG, Expected p-value of %f, got %f", targetP, p)
+		t.Errorf("slightlyAlternatingRNG, Expected p-value of %f, got %f", targetP, p)
 	}
 
 	p = SerialTest(constantRNG{})
 	targetP = 0.0001
 	if p-targetP > MACHINE_EPSILON {
-		t.Errorf("alternatingRNG, Expected p-value of %f, got %f", targetP, p)
+		t.Errorf("constantRNG, Expected p-value of %f, got %f", targetP, p)
 	}
 
 	p = SerialTest(alternatingRNG{})

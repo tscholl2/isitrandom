@@ -43,8 +43,8 @@ func TestFrequencyTest(t *testing.T) {
 	for _, N := range []int{2, 4, 8, 100} {
 		t.Run(fmt.Sprintf("alternating_N=%d", N), func(t *testing.T) {
 			p = FrequencyTest(alternatingRNG{})
-			targetP = 0.0
-			if p != 0.0 {
+			targetP = 1.0
+			if p != 1.0 {
 				t.Errorf("alternatingRNG, Expected p-value of %f, got %f", targetP, p)
 			}
 		})
