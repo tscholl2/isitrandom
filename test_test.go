@@ -32,6 +32,13 @@ func (rng constantRNG) Read(p []byte) (n int, err error) {
 	return len(p), nil
 }
 
+type menezesRNG struct{}
+
+func (rng menezesRNG) Read(p []byte) (n int, err error) {
+	p = []byte{0xe3, 0x11, 0x4e, 0xf2, 0x49} // 1110001100010001010011101111001001001001
+	return len(p), nil
+}
+
 func TestFrequencyTest(t *testing.T) {
 	var p float64
 	var targetP float64
@@ -46,15 +53,21 @@ func TestFrequencyTest(t *testing.T) {
 	}
 
 	p = FrequencyTest(slightlyAlternatingRNG{})
-	targetP = 0.86
-	if p != 0.86 {
+	targetP = 0.9999
+	if p != 0.9999 {
 		t.Errorf("slightlyAlternatingRNG, Expected %f, got %f", targetP, p)
 	}
 
 	p = FrequencyTest(constantRNG{})
-	targetP = 0.999
-	if p != 0.999 {
+	targetP = 0.9999
+	if p != 0.9999 {
 		t.Errorf("constantRNG, Expected %f, got %f", targetP, p)
+	}
+
+	p = FrequencyTest(menezesRNG{})
+	targetP = 0.5
+	if p != 0.5 {
+		t.Errorf("menezesRNG, Expected %f, got %f", targetP, p)
 	}
 
 }
