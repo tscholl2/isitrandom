@@ -5,7 +5,9 @@ import (
 	"io"
 )
 
-// FrequencyTest calls FrequencyTestN with N = 10000.
+// FrequencyTest tests the number of 1s and 0s it sees
+// and compares it to the expected number.
+// See http://cacr.uwaterloo.ca/hac/about/chap5.pdf pg 181
 func FrequencyTest(rng io.Reader) float64 {
 	return FrequencyTestN(rng, 10000)
 }
@@ -35,5 +37,5 @@ func FrequencyTestN(rng io.Reader, N int) float64 {
 	}
 	n := float64(8 * bytesRead)
 	zeros := n - ones
-	return chisquared((zeros-ones)*(zeros-ones)/n, 1)
+	return chisquared((zeros-ones)*(zeros-ones)/(ones+zeros), 1)
 }
