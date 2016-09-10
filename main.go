@@ -5,6 +5,8 @@ import (
 	"testing"
 )
 
+const MACHINE_EPSILON = 0.00001
+
 // Test is a function which takes a random number generator and attempts
 // to perform a randomness test. It should never fail. It should return a
 // p-value indictaing whether it passed the test.

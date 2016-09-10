@@ -63,11 +63,11 @@ func TestFrequencyTest(t *testing.T) {
 	menezesRNG := bytes.NewBuffer([]byte{0xe3, 0x11, 0x4e, 0xf2, 0x49, 0xe3, 0x11, 0x4e, 0xf2, 0x49, 0xe3, 0x11, 0x4e, 0xf2, 0x49, 0xe3, 0x11, 0x4e, 0xf2, 0x49})
 	p, statistic = FrequencyTestN(menezesRNG, menezesRNG.Len())
 	targetP = 0.180000
-	if p != targetP {
+	if p-targetP > MACHINE_EPSILON {
 		t.Errorf("menezesRNG, Expected p-value of %f, got %f", targetP, p)
 	}
 	targetStatistic = 0.4
-	if statistic != targetStatistic {
+	if statistic-targetStatistic > MACHINE_EPSILON {
 		t.Errorf("menezesRNG, Expected targetStatistic of %f, got %f", targetStatistic, statistic)
 	}
 

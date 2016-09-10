@@ -19,7 +19,7 @@ func SerialTest(rng io.Reader) float64 {
 // *bytes*. If N = -1, it will read until EOF.
 // See http://cacr.uwaterloo.ca/hac/about/chap5.pdf pg 181.
 func SerialTestN(rng io.Reader, N int) (float64, float64) {
-	// counts          00 01 10 11
+	// counts           00 01 10 11
 	counts := []float64{0, 0, 0, 0}
 	started := false
 	lastBit := false
@@ -44,17 +44,19 @@ func SerialTestN(rng io.Reader, N int) (float64, float64) {
 				counts[0]++
 			} else if !lastBit && bit { // 01
 				counts[1]++
-			} else if lastBit && !bit { // 01
+			} else if lastBit && !bit { // 10
 				counts[2]++
-			} else if lastBit && bit { // 01
+			} else if lastBit && bit { // 11
 				counts[3]++
 			}
 			lastBit = bit
 		}
 	}
+
 	n := counts[0] + counts[1] + counts[2] + counts[3] + 1
-	statistic := 4/(n-1)*(counts[0]*counts[0]+counts[1]*counts[1]+counts[2]*counts[2]+counts[3]*counts[3]) - (2/n)*(counts[0]*counts[0]+counts[1]*counts[1]) + 1
-	// fmt.Println(counts, statistic)
+	n0 := counts[0] + counts[1]
+	n1 := counts[2] + counts[3] + 1
+	statistic := 4/(n-1)*(counts[0]*counts[0]+counts[1]*counts[1]+counts[2]*counts[2]+counts[3]*counts[3]) - (2/n)*(n0*n0+n1*n1) + 1
 	return chisquared(statistic, 2), statistic
 }
 

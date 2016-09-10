@@ -1,5 +1,8 @@
 # is-it-random
 
+[![GoDoc](https://godoc.org/github.com/tscholl2/isitrandom?status.svg)](https://godoc.org/github.com/tscholl2/isitrandom)
+![coverage](https://img.shields.io/badge/coverage-72%25-yellow.svg)
+
 NIST Statistical Test Suite in Go
 
 # To do
