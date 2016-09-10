@@ -1,6 +1,9 @@
 package isitrandom
 
-import "io"
+import (
+	"fmt"
+	"io"
+)
 
 const frequencyTestN = 10000
 
@@ -13,6 +16,8 @@ func FrequencyTest(rng io.Reader) float64 {
 	for i := 0; i < frequencyTestN; i++ {
 		if _, err := rng.Read(b); err != nil && err != io.EOF {
 			panic(err)
+		} else if err == io.EOF && i < frequencyTestN-1 {
+			panic(fmt.Errorf("not enough bytes: read %d, want: %d", i, frequencyTestN))
 		}
 		for b[0] > 0 {
 			if b[0]&1 == 1 {
@@ -21,6 +26,7 @@ func FrequencyTest(rng io.Reader) float64 {
 			b[0] = b[0] >> 1
 		}
 	}
-	zeros := float64(8*frequencyTestN) - ones
-	return chisquared((zeros-ones)*(zeros-ones)/float64(8*frequencyTestN), 1)
+	n := float64(8 * frequencyTestN)
+	zeros := n - ones
+	return chisquared((zeros-ones)*(zeros-ones)/n, 1)
 }
