@@ -22,5 +22,5 @@ func FrequencyTest(rng io.Reader) float64 {
 		}
 	}
 	zeros := float64(frequencyTestN) - ones
-	return chisquared((zeros - ones) * (zeros - ones) / float64(frequencyTestN))
+	return chisquared((zeros-ones)*(zeros-ones)/float64(frequencyTestN), 1)
 }
