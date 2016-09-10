@@ -4,10 +4,6 @@ Pvalues = [Pvalues 0.01:0.01:0.99];
 Pvalues = sort(Pvalues);
 Pvalues = unique(Pvalues);
 
-dfs = 1:2;
-Pvalues = [0.9999 0.999 0.995	0.975	0.20	0.10	0.05	0.025	0.02	0.01	0.005	0.002	0.001 0.0001];
-Pvalues = sort(Pvalues);
-Pvalues = unique(Pvalues);
 chiSquareMatrix = zeros(length(dfs)+1,length(Pvalues));
 for i=1:length(dfs)
     for j=1:length(Pvalues)
@@ -45,10 +41,6 @@ fclose(fileID);
 
 
 
-Pvalues = [0.9999 0.999 0.995	0.975	0.20	0.10	0.05	0.025	0.02	0.01	0.005	0.002	0.001 0.0001];
-Pvalues = sort(Pvalues);
-Pvalues = unique(Pvalues);
-
 fileID = fopen('normal-zero-one-table.go','w');
 fprintf(fileID,'package main\n\ntype normalLookupTable struct {\n');
 fprintf(fileID,'	P []float64\n');
@@ -69,7 +61,7 @@ for j=1:length(Pvalues)
     if j==length(Pvalues)
         fprintf(fileID,'%2.6f}, \n',norminv(Pvalues(j),0,1));
     else
-        fprintf(fileID,'%2.6f, ',norminv(Pvalues(j),0,1))
+        fprintf(fileID,'%2.6f, ',norminv(Pvalues(j),0,1));
     end
 end
 
