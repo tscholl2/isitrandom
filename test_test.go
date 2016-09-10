@@ -24,12 +24,12 @@ func TestFrequencyTest(t *testing.T) {
 	var p float64
 	p = FrequencyTest(alternatingRNG{})
 	// TODO fix this
-	if p != 0.5 {
+	if p != 0.0 {
 		t.Errorf("Expected %f, got %f", 0.5, p)
 	}
 	// TODO fix this
 	p = FrequencyTest(constantRNG{})
-	if p < 0.5 {
+	if p != 0.9999 {
 		t.Errorf("Expected %f, got %f", 0.5, p)
 	}
 }
