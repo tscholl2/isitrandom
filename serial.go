@@ -10,7 +10,12 @@ import (
 // as would be expected for a random sequence.
 // See http://cacr.uwaterloo.ca/hac/about/chap5.pdf pg 181
 func SerialTest(rng io.Reader) float64 {
-	pValue, _ := FrequencyTestN(rng, 10000)
+	N := 100
+	b := make([]byte, N)
+	for i := 0; i < N; i++ {
+		rng.Read(b)
+	}
+	pValue, _ := SerialTestN(bytes.NewBuffer(b))
 	return pValue
 }
 
@@ -18,7 +23,7 @@ func SerialTest(rng io.Reader) float64 {
 // and compares it to the expected number. It will read N
 // *bytes*. If N = -1, it will read until EOF.
 // See http://cacr.uwaterloo.ca/hac/about/chap5.pdf pg 181.
-func SerialTestN(rng io.Reader, N int) (float64, float64) {
+func SerialTestN(rng io.Reader) (float64, float64) {
 	// counts           00 01 10 11
 	counts := []float64{0, 0, 0, 0}
 	started := false

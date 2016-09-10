@@ -17,6 +17,7 @@ var tests = []struct {
 	test Test
 }{
 	{"frequency", FrequencyTest},
+	{"serial", SerialTest},
 }
 
 // TestRNG tests all the tests available and fails if any p-value is too low.
