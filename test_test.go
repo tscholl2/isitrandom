@@ -8,12 +8,7 @@ type alternatingRNG struct {
 
 func (rng alternatingRNG) Read(p []byte) (n int, err error) {
 	for i := 0; i < len(p); i++ {
-		var b byte
-		for j := 0; j < 8; j++ {
-			b = b<<1 | rng.x
-			rng.x = 1 - rng.x
-		}
-		p[i] = b
+		p[i] = 0xaa // 10101010
 	}
 	return len(p), nil
 }
