@@ -1,4 +1,4 @@
-package main
+package isitrandom
 
 func normZeroOne(x float64) (y float64) {
 	for i, val := range NormalTable.X {

@@ -1,4 +1,4 @@
-package main
+package isitrandom
 
 type chiSquareLookupTable struct {
 	P []float64

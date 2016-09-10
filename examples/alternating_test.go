@@ -3,7 +3,7 @@ package examples
 import (
 	"testing"
 
-	iir "github.com/tscholl2/is-it-random"
+	"github.com/tscholl2/isitrandom"
 )
 
 type alternatingRNG struct {
@@ -18,5 +18,5 @@ func (rng alternatingRNG) Read(p []byte) (n int, err error) {
 }
 
 func TestAlternatingRNG(t *testing.T) {
-	iir.TestRNG(t, alternatingRNG{})
+	isitrandom.TestRNG(t, alternatingRNG{})
 }

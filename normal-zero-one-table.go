@@ -1,4 +1,4 @@
-package main
+package isitrandom
 
 type normalLookupTable struct {
 	P []float64

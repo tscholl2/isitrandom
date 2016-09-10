@@ -1,4 +1,4 @@
-package main
+package isitrandom
 
 import (
 	"io"
@@ -29,5 +29,3 @@ func TestRNG(t *testing.T, rng io.Reader) {
 		})
 	}
 }
-
-func main() {}
