@@ -9,8 +9,8 @@ NIST Statistical Test Suite in Go
 
 1. Implement five basic tests ([section 5.4.4 from Handbook of Applied Cryptogoraphy by Menezes et al.](http://cacr.uwaterloo.ca/hac/about/chap5.pdf))
 
-  - [ ] Frequency test
-  - [ ] Serial test
+  - [x] Frequency test
+  - [x] Serial test
   - [ ] Poker test
   - [ ] Runs test
   - [ ] Autocorrelation test
