@@ -26,7 +26,7 @@ func TestRNG(t *testing.T, rng io.Reader) {
 	for _, a := range tests {
 		t.Run(a.name, func(t *testing.T) {
 			p := a.test(rng)
-			if p > 0.05 {
+			if p < 0.05 {
 				t.Errorf("Fail %s: expected p-value ≤ 0.05, got %f", a.name, p)
 			}
 		})
