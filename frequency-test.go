@@ -5,7 +5,7 @@ import (
 	"io"
 )
 
-const frequencyTestN = 10000
+var frequencyTestN = 10000
 
 // FrequencyTest tests the number of 1s and 0s it sees
 // and compares it to the expected number.
@@ -28,5 +28,5 @@ func FrequencyTest(rng io.Reader) float64 {
 	}
 	n := float64(8 * frequencyTestN)
 	zeros := n - ones
-	return chisquared((zeros-ones)*(zeros-ones)/n, 1)
+	return chisquared((zeros-ones)*(zeros-ones)/(ones+zeros), 1)
 }

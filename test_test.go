@@ -31,19 +31,26 @@ func (rng constantRNG) Read(p []byte) (n int, err error) {
 
 func TestFrequencyTest(t *testing.T) {
 	var p float64
+	var targetP float64
+
+	frequencyTestN = 2
 
 	p = FrequencyTest(alternatingRNG{})
+	targetP = 0.0
 	if p != 0.0 {
-		t.Errorf("Expected %f, got %f", 0.0, p)
+		t.Errorf("alternatingRNG, Expected %f, got %f", targetP, p)
 	}
 
 	p = FrequencyTest(slightlyAlternatingRNG{})
-	if p != 0.5 {
-		t.Errorf("slightlyAlternatingRNG, Expected %f, got %f", 0.9999, p)
+	targetP = 0.86
+	if p != 0.86 {
+		t.Errorf("slightlyAlternatingRNG, Expected %f, got %f", targetP, p)
 	}
 
 	p = FrequencyTest(constantRNG{})
-	if p != 0.9999 {
-		t.Errorf("Expected %f, got %f", 0.9999, p)
+	targetP = 0.999
+	if p != 0.999 {
+		t.Errorf("constantRNG, Expected %f, got %f", targetP, p)
 	}
+
 }
