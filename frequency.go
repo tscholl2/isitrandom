@@ -9,14 +9,15 @@ import (
 // and compares it to the expected number.
 // See http://cacr.uwaterloo.ca/hac/about/chap5.pdf pg 181
 func FrequencyTest(rng io.Reader) float64 {
-	return FrequencyTestN(rng, 10000)
+	pValue, _ := FrequencyTestN(rng, 10000)
+	return pValue
 }
 
 // FrequencyTestN tests the number of 1s and 0s it sees
 // and compares it to the expected number. It will read N
 // *bytes*. If N = -1, it will read until EOF.
 // See http://cacr.uwaterloo.ca/hac/about/chap5.pdf pg 181.
-func FrequencyTestN(rng io.Reader, N int) float64 {
+func FrequencyTestN(rng io.Reader, N int) (float64, float64) {
 	ones := float64(0)
 	b := make([]byte, 1)
 	bytesRead := 0
@@ -37,5 +38,5 @@ func FrequencyTestN(rng io.Reader, N int) float64 {
 	}
 	n := float64(8 * bytesRead)
 	zeros := n - ones
-	return chisquared((zeros-ones)*(zeros-ones)/(ones+zeros), 1)
+	return chisquared((zeros-ones)*(zeros-ones)/(ones+zeros), 1), (zeros - ones) * (zeros - ones) / (ones + zeros)
 }
