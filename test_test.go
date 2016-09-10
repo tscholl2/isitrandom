@@ -1,6 +1,7 @@
 package isitrandom
 
 import (
+	"bytes"
 	"fmt"
 	"testing"
 )
@@ -32,13 +33,6 @@ func (rng constantRNG) Read(p []byte) (n int, err error) {
 	return len(p), nil
 }
 
-type menezesRNG struct{}
-
-func (rng menezesRNG) Read(p []byte) (n int, err error) {
-	p = []byte{0xe3, 0x11, 0x4e, 0xf2, 0x49} // 1110001100010001010011101111001001001001
-	return len(p), nil
-}
-
 func TestFrequencyTest(t *testing.T) {
 	var p float64
 	var targetP float64
@@ -64,7 +58,9 @@ func TestFrequencyTest(t *testing.T) {
 		t.Errorf("constantRNG, Expected %f, got %f", targetP, p)
 	}
 
-	p = FrequencyTest(menezesRNG{})
+	// 1110001100010001010011101111001001001001
+	menezesRNG := bytes.NewBuffer([]byte{0xe3, 0x11, 0x4e, 0xf2, 0x49})
+	p = FrequencyTestN(menezesRNG, menezesRNG.Len())
 	targetP = 0.5
 	if p != 0.5 {
 		t.Errorf("menezesRNG, Expected %f, got %f", targetP, p)
