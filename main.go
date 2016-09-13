@@ -35,7 +35,7 @@ var tests = []struct {
 	name string
 	t    test
 }{
-	{"frequency", &frequency{}},
+	// {"frequency", &frequency{}},
 	{"serial", &serial{}},
 }
 

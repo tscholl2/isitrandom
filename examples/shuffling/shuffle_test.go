@@ -2,17 +2,21 @@ package main
 
 import (
 	"bytes"
-	"encoding/binary"
-	"fmt"
 	"math/rand"
 	"testing"
 
 	"github.com/tscholl2/isitrandom"
 )
 
-func TestShuffleDeckRNG(t *testing.T) {
-	_, deck := GenerateDeck()
-	isitrandom.TestRNG(t, bytes.NewBuffer(deck))
+//
+// func TestStraightDeckRNG(t *testing.T) {
+// 	rand.Seed(42)
+// 	isitrandom.TestRNG(t, bytes.NewBuffer(BoolToByte(Sign(Diff(GenerateDeck())))))
+// }
+
+func TestRandomlyShuffledDeckRNG(t *testing.T) {
+	rand.Seed(42)
+	isitrandom.TestRNG(t, bytes.NewBuffer(BoolToByte(Sign(Diff(ShuffleRandomly(GenerateDeck()))))))
 }
 
 // func main() {
@@ -24,53 +28,6 @@ func TestShuffleDeckRNG(t *testing.T) {
 // 	WriteBits(shuffledDeck)
 //
 // }
-
-func ShuffleDeckRandomly(src []int) []int {
-	// Randomly shuffle deck
-	rand.Seed(42)
-	dest := make([]int, len(src))
-	perm := rand.Perm(len(src))
-	for i, v := range perm {
-		dest[v] = src[i]
-	}
-	return dest
-}
-
-func GenerateDeck() ([]int, []byte) {
-	// Generate 4 sets of 13 numbers that are ordinally dissimilar
-	deck := make([]int, 52)
-	current := 0
-	start := int(-128)
-	for i := start; i < start+13; i++ {
-		deck[current] = i
-		current++
-	}
-	start = int(-63)
-	for i := start; i < start+13; i++ {
-		deck[current] = i
-		current++
-	}
-	start = int(50)
-	for i := start; i < start+13; i++ {
-		deck[current] = i
-		current++
-	}
-	start = int(116)
-	for i := start; i < start+13; i++ {
-		deck[current] = i
-		current++
-	}
-
-	buf := new(bytes.Buffer)
-	for _, val := range deck {
-		err := binary.Write(buf, binary.LittleEndian, int8(val))
-		if err != nil {
-			fmt.Println("binary.Write failed:", err)
-		}
-	}
-
-	return deck, buf.Bytes()
-}
 
 // func WriteBits(deck []int) {
 // 	buf := new(bytes.Buffer)
