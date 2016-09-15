@@ -15,8 +15,11 @@ import (
 // }
 
 func TestRandomlyShuffledDeckRNG(t *testing.T) {
-	rand.Seed(42)
-	isitrandom.TestRNG(t, bytes.NewBuffer(BoolToByte(Sign(Diff(ShuffleRandomly(GenerateDeck()))))))
+	rand.Seed(15)
+	shuffled := EmpiricallyShuffle(3)
+	//a2 := Sign(Diff(shuffled))
+	a2 := Sign(SplitDiff(shuffled))
+	isitrandom.TestRNG(t, bytes.NewBuffer(BoolToByte(a2)))
 }
 
 // func main() {

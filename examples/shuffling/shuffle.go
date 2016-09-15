@@ -12,25 +12,79 @@ import (
 // packets with either                 1       2        3      4       5    cards
 var EmpiricalShuffling = []float64{0.5117, 0.8729, 0.9565, 0.9799, 1.000}
 
+// SplitDiff returns the difference between the top half and
+// the bottom half of values, in order
+func SplitDiff(src []int) []int {
+	max := 0
+	for _, val := range src {
+		if val > max {
+			max = val
+		}
+	}
+	d1 := []int{}
+	d2 := []int{}
+	threshold := max / 2
+	loc := make(map[int]int)
+	for i, val := range src {
+		if val <= threshold {
+			d1 = append(d1, val)
+		} else {
+			d2 = append(d2, val)
+		}
+		loc[val] = i
+	}
+	d1Diff := Diff(d1)
+	d2Diff := Diff(d2)
+	d := make([]int, len(d1Diff)+len(d2Diff)+1)
+	for i, val := range d1Diff {
+		index := loc[d1[i]]
+		d[index] = val
+	}
+	for i, val := range d2Diff {
+		index := loc[d2[i]]
+		d[index] = val
+	}
+	return d
+}
+
 func main() {
 	rand.Seed(43)
-	randomDecks := []byte{}
-	for i := 0; i < 100; i++ {
-		a := ShuffleRandomly(GenerateDeck())
-		b := BoolToByte(Sign(Diff(a)))
-		randomDecks = append(randomDecks, b...)
-	}
-	err := ioutil.WriteFile("test.dat", randomDecks, 0644)
-	if err != nil {
-		log.Fatal(err)
-	}
+	// randomDecks := []byte{}
+	// for i := 0; i < 100; i++ {
+	// 	a := ShuffleRandomly(GenerateDeck())
+	// 	b := BoolToByte(Sign(Diff(a)))
+	// 	randomDecks = append(randomDecks, b...)
+	// }
+	// err := ioutil.WriteFile("test.dat", randomDecks, 0644)
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
 
-	randomDecks = []byte{}
-	for i := 0; i < 100; i++ {
-		b := BoolToByte(Sign(Diff(EmpiricallyShuffle(11))))
+	randomDecks := []byte{}
+	for i := 0; i < 1; i++ {
+		shuffled := EmpiricallyShuffle(2)
+		a := Sign(Diff(shuffled))
+		a2 := Sign(SplitDiff(shuffled))
+		b := BoolToByte(a)
+		for _, val := range a {
+			if val {
+				fmt.Printf("1")
+			} else {
+				fmt.Printf("0")
+			}
+		}
+		fmt.Printf("\n")
+		for _, val := range a2 {
+			if val {
+				fmt.Printf("1")
+			} else {
+				fmt.Printf("0")
+			}
+		}
+		fmt.Printf("\n")
 		randomDecks = append(randomDecks, b...)
 	}
-	err = ioutil.WriteFile("test2.dat", randomDecks, 0644)
+	err := ioutil.WriteFile("test2.dat", randomDecks, 0644)
 	if err != nil {
 		log.Fatal(err)
 	}
