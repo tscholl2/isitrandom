@@ -6,6 +6,9 @@ import (
 	"log"
 	"math"
 	"math/rand"
+	"time"
+
+	"github.com/tscholl2/isitrandom"
 )
 
 // EmpiricalShuffling is the Empirical probability of riffling and getting
@@ -49,6 +52,7 @@ func SplitDiff(src []int) []int {
 
 func main() {
 	rand.Seed(43)
+	rand.Seed(time.Now().UTC().UnixNano())
 	// randomDecks := []byte{}
 	// for i := 0; i < 100; i++ {
 	// 	a := ShuffleRandomly(GenerateDeck())
@@ -61,32 +65,63 @@ func main() {
 	// }
 
 	randomDecks := []byte{}
-	for i := 0; i < 1; i++ {
-		shuffled := EmpiricallyShuffle(2)
-		a := Sign(Diff(shuffled))
-		a2 := Sign(SplitDiff(shuffled))
-		b := BoolToByte(a)
-		for _, val := range a {
-			if val {
-				fmt.Printf("1")
-			} else {
-				fmt.Printf("0")
-			}
+
+	shuffled := EmpiricallyShuffle(7)
+	a := Sign(Diff(shuffled))
+	a2 := Sign(SplitDiff(shuffled))
+	b := BoolToByte(a)
+	fmt.Printf("Diff:       ")
+	for _, val := range a {
+		if val {
+			fmt.Printf("1")
+		} else {
+			fmt.Printf("0")
 		}
-		fmt.Printf("\n")
-		for _, val := range a2 {
-			if val {
-				fmt.Printf("1")
-			} else {
-				fmt.Printf("0")
-			}
-		}
-		fmt.Printf("\n")
-		randomDecks = append(randomDecks, b...)
 	}
+	fmt.Printf(" ")
+	fmt.Printf("%1.2f %1.2f", isitrandom.SerialP(BoolToByte(a)), isitrandom.FrequencyP(BoolToByte(a)))
+	fmt.Printf("\nSplit Diff: ")
+	for _, val := range a2 {
+		if val {
+			fmt.Printf("1")
+		} else {
+			fmt.Printf("0")
+		}
+	}
+	fmt.Printf(" ")
+	fmt.Printf("%1.2f %1.2f", isitrandom.SerialP(BoolToByte(a2)), isitrandom.FrequencyP(BoolToByte(a2)))
+	fmt.Printf("\n")
+	randomDecks = append(randomDecks, b...)
+
 	err := ioutil.WriteFile("test2.dat", randomDecks, 0644)
 	if err != nil {
 		log.Fatal(err)
+	}
+
+	for numShuffles := 1; numShuffles < 11; numShuffles++ {
+		failures := float64(0)
+		for i := 1; i < 1000; i++ {
+			shuffle := EmpiricallyShuffle(numShuffles)
+			diff1 := BoolToByte(Sign(Diff(shuffle)))
+			if isitrandom.SerialP(diff1) < 0.05 {
+				failures++
+				continue
+			}
+			if isitrandom.FrequencyP(diff1) < 0.05 {
+				failures++
+				continue
+			}
+			diff2 := BoolToByte(Sign(SplitDiff(shuffle)))
+			if isitrandom.SerialP(diff2) < 0.05 {
+				failures++
+				continue
+			}
+			if isitrandom.FrequencyP(diff2) < 0.05 {
+				failures++
+				continue
+			}
+		}
+		fmt.Printf("\nShuffles: %d, Non-random occurences: %2.2f%%", numShuffles, failures/1000.0*100.0)
 	}
 
 }
@@ -124,8 +159,6 @@ func EmpiricallyShuffle(numberOfShuffles int) []int {
 			}
 		}
 
-		fmt.Println(packets)
-		fmt.Println(topDeck)
 		// Now generate shuffled deck based on alternating packets
 		var packet1 []int
 		var packet2 []int
@@ -146,7 +179,6 @@ func EmpiricallyShuffle(numberOfShuffles int) []int {
 				}
 			}
 		}
-		fmt.Println(packet1, packet2)
 		packet1i := -1
 		packet2i := -1
 		cardi := -1
@@ -172,7 +204,6 @@ func EmpiricallyShuffle(numberOfShuffles int) []int {
 		for i := range deck {
 			newdeck[i] = deck[cardNums[i]]
 		}
-		fmt.Println(newdeck)
 		deck = newdeck
 	}
 	return deck

@@ -32,3 +32,11 @@ func (f *frequency) p() float64 {
 func FrequencyTest(rng io.Reader) float64 {
 	return buildIOReaderTest(&frequency{})(rng)
 }
+
+func FrequencyP(short []byte) float64 {
+	ft := &frequency{}
+	for _, val := range short {
+		ft.next(val)
+	}
+	return ft.p()
+}

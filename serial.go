@@ -58,3 +58,11 @@ func (f *serial) p() float64 {
 func SerialTest(rng io.Reader) float64 {
 	return buildIOReaderTest(&serial{})(rng)
 }
+
+func SerialP(short []byte) float64 {
+	ft := &serial{}
+	for _, val := range short {
+		ft.next(val)
+	}
+	return ft.p()
+}
